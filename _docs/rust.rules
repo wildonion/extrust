@@ -147,6 +147,8 @@ Sugar Rules:
     [+] object safe trait can be implemented for a type using Box<dyn Trait> or &dyn Trait
     [+] when we derive a Copy implementation Clone is also required cause it's a supertrait of Copy.
     [+] trait Clone is an example of none object safe trait cause its implementor types' data are stored on heap and we can't use it like Box<dync Clone> due to the reason that the trait will return the Self in its method, thus it's not safe to use it inside the box for different implementors and by using Clone trait we'll have heavy runtime overhead for big size objects!
+    [+] if Copy trait is implemented for a type means we can move that type without losing the ownership otherwise we'll lose the ownership and we must clone the data 
+    [+] we can't move that type if the Clone trait wasn't implemented for that type in this case we have to take a reference to the location of that type inside the heap
 Sugar Memories:
     [+] traits, macros, Box<dyn Trait> &dyn Trait, mpsc job queue channel, ptr + len + cap, pointers and clone (deep copy) for borrowing instead of moving the ownership, 
     [+] lifetimes to prevent dangling pointers from returning + every pointer has its own lifetime

@@ -47,6 +47,7 @@ Async & Multithreading Rules:
     [+] we have to take an atomic reference from the receiver using Arc in order to clone it for passing between multiple threads and for mutating it we have to put it inside a Mutex to insure that only one thread can change the content of the receiver at a time. this is done by waiting on the receiver until a job or task becomes available to down side of the channel then locking on the receiver to acquire the mutex.
     [+] thread safe coding is about to putting the shareable receiver (cloned with Arc) inside a Mutex in order to lock on the incoming task from the sender to prevent other threads from mutating the task at a time.
 Sugar Rules:
+    [+] None takes up exactly as much memory as if it were Some<T>. This is because Rust needs to know the Size of the Data you want to store and how much space it needs to allocate and for enums, which an option is, that means the space they need is as much as the largest variant And although you know that None will not change in this case, you could also swap it out with Some<T> any time later and then that new value needs to fit into that space
     [+] 16 bits means 2 pack of 8 bits, 8 bits means 1 pack of 8 bits, 32 bits means 4 pack of 8 bits
     [+] 4 bits -> 1 hex and 8 bits -> 2 hex -> 1 byte and 256 bits -> 64 hex -> 32 bytes 
     [+] we can use as_ref() method on Options to borrow the content inside the Option instead of using clone() method

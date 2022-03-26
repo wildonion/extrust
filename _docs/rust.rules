@@ -67,7 +67,7 @@ Sugar Rules:
     [+] procedural macros enables other prgrammers to use our trait on our own struct
     [+] macros are expanded before the compiler interprets the meaning of the code, so a macro can, for example, implement a trait on a given type
     [+] function gets called at runtime and a trait needs to be implemented at compile time
-    [+] for those types specially concrete types like traits which don't have size at compile time means they are not bounded to Sized trait, we have to point them using a pointer like Box<dyn Trait> or &dyn Trait
+    [+] for those types specially abstract types like object safe traits which don't have size at compile time and they are not bounded to Sized trait, we have to point them using a pointer like Box<dyn Trait> or &dyn Trait
     [+] into_something methods consumes self, avoiding clones as much as possible, and to_something takes &self, potentially cloning some data
     [+] web::Payload in actix is used to extract the streaming of binary data from the request
     [+] we can’t copy the heap allocated data cause if a data with a large length and capacity is gonna be on the heap the copy of that data will face us into a runtime performance issue

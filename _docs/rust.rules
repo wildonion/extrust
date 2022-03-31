@@ -156,6 +156,7 @@ Sugar Rules:
     [+] in order to use the Copy trait the trait Clone must be implemented cause Clone is a supertrait of Copy
     [+] if we don't use & the value will be moved by passing into the new scope unless the Copy trait was implemented for or we can prevent it from moving using clone method if the Clone was implemented for 
 Sugar Memories:
+    [+] don't need a garbage collector cause based on the ownership system in rust value will be moved or dropped when you move into the new scop or passing it to the function as a parameter unless you clone it or the Copy trait has been implemented for that type or borrow it using &
     [+] traits, macros, Box<dyn Trait> &dyn Trait, mpsc job queue channel, ptr + len + cap, pointers and clone (deep copy) for borrowing instead of moving the ownership, 
     [+] lifetimes to prevent dangling pointers from returning + every pointer has its own lifetime
     [+] encoder like (de)serializing from or (d)ecoding into utf8 bytes or mapping using union, borsh and serde codec,  

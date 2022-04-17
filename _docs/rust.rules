@@ -160,7 +160,7 @@ Sugar Memories:
     [+] #[..] applies an attribute to the thing after it and #![..] applies an attribute to the containing thing like the whole crate stuff
     [+] Box<T> is one of the smart pointers in the Rust standard library, it provides a way to allocate enough memory on the heap to store a value of the corresponding type, and then it serves as a handle, a pointer to that memory
     [+] Box<T> owns the data it points to; when it is dropped, the corresponding piece of memory on the heap is deallocated and we can use dereference operator to reach their contents
-    [+] don't need a garbage collector cause based on the ownership system in rust value will be moved or dropped when you move into the new scop or passing it to the function as a parameter unless you clone it or the Copy trait has been implemented for that type or borrow it using &
+    [+] don't need a garbage collector cause based on the ownership system in rust value will be moved or dropped from the ram (its lifetime is no longer available in the previous scope) when you move into the new scop or a new variable or passing it to the function as a parameter unless you clone it or the Copy trait has been implemented for that type or borrow it using &
     [+] traits, macros, Box<dyn Trait> &dyn Trait, mpsc job queue channel, ptr + len + cap, pointers and clone (deep copy) for borrowing instead of moving the ownership, 
     [+] lifetimes to prevent dangling pointers from returning + every pointer has its own lifetime
     [+] encoder like (de)serializing from or (d)ecoding into utf8 bytes or mapping using union, borsh and serde codec,  

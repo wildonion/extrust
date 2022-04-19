@@ -9,7 +9,7 @@ Async & Multithreading Rules:
     [+] closures and object safe traits are not bounded to trait Sized thus their size are unknown at compile and need runtime information to get their own size at runtime so they can't be pinned into the memory thus we can't use them as a future object by putting the async before them cause futures need to be pinned somewhere in ram to be solved later
     [+] futures do nothing unless we call .await on them or poll them and await can only be used inside an async block of function
     [+] when we put the async keyword behind a block or function means we're implementing Future<Output = ()> trait for them and turn them into a Future object and the outpute depends on the return type of that function or block
-    [+] block_on will run a future to completion on the current thread and block the thread (execution gets stuck there) until the given future has completed (release the mutex)
+    [+] block_on will run a future to completion on the current thread and block the thread (executor gets stuck there) until the given future has completed (release the mutex)
     [+] .awaiting a future will suspend the current function's execution until the executor has run the future to completion means doesn't block the current thread, allowing other tasks to run if the future is currently unable to make progress
     [+] join!() is like .await but can wait for multiple futures concurrently, completing multiple futures at the same time
     [+] async codes will not be run immediately, but will only be evaluated when the returned future is .awaited

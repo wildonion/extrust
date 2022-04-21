@@ -64,6 +64,8 @@ Sugar Rules:
     [+] the size of a unit struct like Test (std::mem::size_of::<Test>()) is 0
     [+] a codec is basically an algorithm which will map or deserialize the buffer filled of utf8 bytes from memory into an object and visa versa
     [+] there is no way for the compiler to guarantee that you always read the correct type (that is, the most recently written type) from the union
+    [+] some types are clever and pack a bit tighter, such as Option<&T> which is uses the null pointer optimization
+    [+] an enum is the size of the maximum of its variants plus a discriminant value to know which variant it is, rounded up to be efficiently aligned. The alignment depends on the platform
     [+] an enum and its tag size with one variant is equals to the size of that variant
     [+] an enum size wit more than one variant is equals to a variant with largest size + 8 bytes tag cause 
     [+] enum size with a single f64 type variant would be 8 bytes and with four f64 variants would be 16 bytes cause one 8 bytes wouldn't be enough because there would be no room for the tag.

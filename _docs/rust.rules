@@ -61,6 +61,7 @@ Sugar Rules:
     [+] one byte or 00000000 or 0x00 - every 4 digits in one byte is a hex number and every 3 digit in one byte is a oct number
     [+] 32 bytes means 256 bits and 64 characters cause every 4 digits in one byte represents one digit in hex thus 00000000 means 0x00 which is 2 characters in hex and 32 bytes hex string means 64 characters
     [+] one byte is the range 00000000 - 11111111 in binary, or 0x00 - 0xFF in hex, one byte is represented in hex as a 2 character string therefore, a 32 byte hex string is 64 characters long
+    [+] the size of a String allocated in memeory is 24 bytes; 64 bits (usize which big enough to hold any pointer or offset) for each of pointer, len and capacity 
     [+] the size of a unit struct like Test (std::mem::size_of::<Test>()) is 0
     [+] a codec is basically an algorithm which will map or deserialize the buffer filled of utf8 bytes from memory into an object and visa versa
     [+] there is no way for the compiler to guarantee that you always read the correct type (that is, the most recently written type) from the union
@@ -73,7 +74,7 @@ Sugar Rules:
     [+] null pointer optimization means a reference can never be null thus rust uses that reference or pointer as the tag with 8 bytes length for the current variant 
     [+] enums use some extra memory to keep track of the enum variant, with unions we keep track of the current active field ourself
     [+] all fields of a union share common storage and writes to one field of a union can overwrite its other fields, and size of a union is determined by the size of its largest field
-    [+] usize gives you the guarantee to be always big enough to hold any pointer or any offset in a data structure  and its size is depended on how much size it takes to reference any location in memory, on a 32 bit target usize is 4 bytes and on a 64 bit target usize is 8 bytes, while u32 can be too small on some architectures
+    [+] usize gives you the guarantee to be always big enough to hold any pointer or any offset in a data structure and its size is depended on how much size it takes to reference any location in memory, on a 32 bit target usize is 4 bytes and on a 64 bit target usize is 8 bytes, while u32 can be too small on some architectures
     [+] procedural macros enables other prgrammers to use our trait on our own struct
     [+] macros are expanded before the compiler interprets the meaning of the code, so a macro can, for example, implement a trait on a given type
     [+] function gets called at runtime and a trait needs to be implemented at compile time

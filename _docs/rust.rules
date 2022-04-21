@@ -64,6 +64,8 @@ Sugar Rules:
     [+] the size of a unit struct like Test (std::mem::size_of::<Test>()) is 0
     [+] a codec is basically an algorithm which will map or deserialize the buffer filled of utf8 bytes from memory into an object and visa versa
     [+] there is no way for the compiler to guarantee that you always read the correct type (that is, the most recently written type) from the union
+    [+] enum has an 8 bytes tag which tells use which variant we have right now, but rust uses null pointer optimization instead of allocating 8 bytes tag 
+    [+] null pointer optimization means a reference can never be null thus rust uses that reference or pointer as the tag with 8 bytes length for the current variant 
     [+] enums use some extra memory to keep track of the enum variant, with unions we keep track of the current active field ourself
     [+] all fields of a union share common storage and writes to one field of a union can overwrite its other fields, and size of a union is determined by the size of its largest field
     [+] usize gives you the guarantee to be always big enough to hold any pointer or any offset in a data structure  and its size is depended on how much size it takes to reference any location in memory, on a 32 bit target usize is 4 bytes and on a 64 bit target usize is 8 bytes, while u32 can be too small on some architectures

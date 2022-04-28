@@ -203,7 +203,7 @@ Sugar Memories:
     [+] thread::spawn(|| async move{}) and tokio::spawn(async move{}) return a JoinHandle 
     [+] if the trait Copy was implemented for a type means we can move it without loosing its ownership if it wan't we have to clone it using either trait Clone or Arc 
     [+] & will borrow the ownership of the type and needs an specific lifeimte for the entire of the program 
-    [+] shared reference can't dereference between threads and we can sovle it using as_ref() method wich converts a &wrapped type into &T
+    [+] shared reference can't dereference between threads and can't move out of it cause by moving or dereferencing its it'll lose its ownership and lifetime while some methods and threads are using it; we can sovle this using as_ref() method wich converts a &wrapped type into &T or by cloning the type
     [+] load balancer distributes incoming client requests among a group of servers, in each case returning the response from the selected server to the appropriate client
     [+] borrowing the Option's content using as_ref() method and mutable reference will borrow the variable as mutable 
     [+] multithreading is about spawning n threads in overall to handle all incoming tasks from a process like evert socket connections inside a free thread by locking the mutex or the task inside a free thread and one task per available thread

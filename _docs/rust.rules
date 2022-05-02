@@ -168,6 +168,8 @@ Sugar Rules:
     [+] if we don't use & the value will be moved by passing into the new scope unless the Copy trait was implemented for or we can prevent it from moving using clone method if the Clone was implemented for 
 Sugar Memories:
     [+] #[..] applies an attribute to the thing after it and #![..] applies an attribute to the containing thing like the whole crate stuff
+    [+] size of the value inside any smart pointer is equals to the size of the smart pointer itself which is usize
+    [+] the size of a boxed value or size_of_val(&Box::new(10)) is equals to the usize (8 bytes or 4 bytes) which is the size of the Box which is just a pointer and a pointer takes usize to reference any location inside the memory 
     [+] Box<T> is one of the smart pointers in the Rust standard library, it provides a way to allocate enough memory on the heap to store a value of the corresponding type, and then it serves as a handle (contains more bytes other the actual size of that tyep), a pointer to that memory
     [+] Box<T> owns the data it points to and we can use dereference operator to reach their contents; when it is dropped, the corresponding piece of memory on the heap is deallocated
     [+] when the value of a type moves (to new scope, function params or into another variable) the runtime will generate a new location inside the ram and the old one will be popped from the stack thus the old type is no longer exists inside the code cause it's lifetime has been done inside the stack we can solve this issue with cloning or borrowing the ownership of the value of that type using &

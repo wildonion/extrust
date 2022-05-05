@@ -214,7 +214,7 @@ Sugar Memories:
     [+] load balancer distributes incoming client requests among a group of servers, in each case returning the response from the selected server to the appropriate client
     [+] borrowing the Option's content using as_ref() method and mutable reference will borrow the variable as mutable 
     [+] multithreading is about spawning n threads in overall to handle all incoming tasks from a process like evert socket connections inside a free thread by locking the mutex or the task inside a free thread and one task per available thread
-    [+] &self is a pointer to all struct fields and mutating the struct fields is done using &mut self (a mutable pointer to struct fields) 
+    [+] &self is a pointer to all struct fields and mutating the struct fields is done using &mut self (a mutable pointer to struct fields) and dereferencing &self or &mut self (to get the value of the pointer) will be done automatically by the compiler 
     [+] if you want to add a pointer with lifetime use &'a Type and if you don't want the lifetime use *const Type (raw pointer)
     [+] borrow checker checks for valid lifetime of a pointer which is &T (borrowed of T) to avoid having dangled pointer
     [+] struct can own its field like there is not pointer to a type like &'s str and we'll pass self to its first parameter method or it can owned a borrowed field like &'s str

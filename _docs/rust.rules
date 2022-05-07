@@ -167,6 +167,7 @@ Sugar Rules:
     [+] in order to use the Copy trait the trait Clone must be implemented cause Clone is a supertrait of Copy
     [+] if we don't use & the value will be moved by passing into the new scope unless the Copy trait was implemented for or we can prevent it from moving using clone method if the Clone was implemented for 
 Sugar Memories:
+    [+] if the size of the u8 is not specified we have to either use & with lifetime or put it inside a Box in which the lifetime will be handled automatically by the Box itself
     [+] generic type is needed for function returns and types and for those types that haven't fixed size in compile time we have to put them inside the Box or take a reference to them to borrow them using & and the size of the Box is usize and the size of the Box inside heap is the size of the Box value which T inside the Box and the Box will have a default valid lifetime for any type inside of it
     [+] [u8] must have a known size like [u8; 8] for 8 digits or chars otherwise we have to take a pointer to it like &[u8] and pointers need a valid lifetime if there are inside struct field or function params
     [+] #[..] applies an attribute to the thing after it and #![..] applies an attribute to the containing thing like the whole crate stuff

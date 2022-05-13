@@ -47,6 +47,7 @@ Async & Multithreading Rules:
     [+] we have to take an atomic reference from the receiver using Arc in order to clone it for passing between multiple threads and for mutating it we have to put it inside a Mutex to insure that only one thread can change the content of the receiver at a time. this is done by waiting on the receiver until a job or task becomes available to down side of the channel then locking on the receiver to acquire the mutex.
     [+] thread safe coding is about to putting the shareable receiver (cloned with Arc) inside a Mutex in order to lock on the incoming task from the sender to prevent other threads from mutating the task at a time.
 Sugar Rules:
+    [+] we have to pass by reference using & in function param to borrow the ownership of the type like passing Vec and String by & to borrow a slice of them and coerce them to &[u8] and &str
     [+] bytecodes like .wasm and .so are compiled codes (on RAM instructions) from other langs must be loaded into a buffer to execute them on RAM using VMs
     [+] big-endian system stores the most significant byte of a word at the smallest memory address and the least significant byte at the largest (the most right hex will be stored at the bottom of the stack)
     [+] null pointer optimisation means that Option<&T> is exactly the same size as &T instead of requiring an extra word or 8 bytes tag cause null pointer optimization takes advantage of the fact that a reference can never be null, and instead uses that as a special value to represent the tag
@@ -61,7 +62,9 @@ Sugar Rules:
     [+] one byte or 00000000 or 0x00 - every 4 digits in one byte is a hex number and every 3 digit in one byte is a oct number
     [+] 32 bytes means 256 bits and 64 characters cause every 4 digits in one byte represents one digit in hex thus 00000000 means 0x00 which is 2 characters in hex and 32 bytes hex string means 64 characters
     [+] one byte is the range 00000000 - 11111111 in binary, or 0x00 - 0xFF in hex, one byte is represented in hex as a 2 character string therefore, a 32 byte hex string is 64 characters long
-    [+] the size of a String allocated in memeory is 24 bytes; 64 bits or 8 bytes (usize which big enough to hold any pointer or offset) for each of pointer, len and capacity on 64 bits system 
+    [+] the size of a String allocated in memeory is 24 bytes; 64 bits or 8 bytes or usize (usize which is big enough to hold any pointer or offset) for each of pointer, len and capacity on 64 bits system
+    [+] the size of the &str allocated in memeory (heap or binary or stack) is the total length of the that str itself for example the size of a none emoji word like "wildonion" is 9 bytes 1 byte for each but the size of "wildn🥲oion" is 13 bytes which is 4 bytes more than the "wildonion" which is because of 🥲 emoji 
+    [+] the size of the &str allocated in memeory (heap or binary or stack) is equals to the size of that str in bytes: size_of_val("wildonion") == size_of_val("wildonion".as_bytes()) 
     [+] the size of a unit struct like Test (std::mem::size_of::<Test>()) is 0
     [+] a codec is basically an algorithm which will map or deserialize the buffer filled of utf8 bytes from memory into an object and visa versa
     [+] there is no way for the compiler to guarantee that you always read the correct type (that is, the most recently written type) from the union
@@ -228,5 +231,5 @@ Sugar Memories:
     [+] pointer to the heap to borrow the data inside the heap cause we don't have a specific size at compile time for the heap data structures
     [+] async message passing (share clonable data) between threads using channels
     [+] Rust can handle multi proccessing also if all jobs or threads inside a single core are busy it'll move into another cpu core
-    
+    [+] the return type of each arm in match and each clause in if let must be the same unless we use some panic messages
 

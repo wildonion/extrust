@@ -328,7 +328,15 @@ fn unsafer(){
     ///// ------------------------------------------------------------------------ /////
 
 
-
+    
+    // size of the &str is equals to its bytes and more less than the size of the String 
+    // which is 24 bytes usize (8 bytes or 64 bits on 64 bits arch) for each of len, pointer and capacity 
+    let name = "wildn🥲oion";
+    let string_name = name.to_string();
+    let byte_name = name.as_bytes();    
+    println!("size name -> {:#?}", size_of_val(name));
+    println!("size string name -> {:#?}", size_of_val(&string_name));
+    println!("size byte name -> {:#?}", size_of_val(byte_name));
 
 
 

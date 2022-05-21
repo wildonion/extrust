@@ -170,7 +170,7 @@ Sugar Rules:
     [+] in order to use the Copy trait the trait Clone must be implemented cause Clone is a supertrait of Copy
     [+] if we don't use & the value will be moved by passing into the new scope unless the Copy trait was implemented for or we can prevent it from moving using clone method if the Clone was implemented for 
 Sugar Memories:
-    [+] define the trait and struct methods as &mut self if you want to mutate their fields
+    [+] define the trait and struct methods as &mut self (a shared mutable pointer or reference) if you want to mutate and update their fields otherwise &self &mut self (a shared immutable pointer or reference)
     [+] &self means all fields in struct are in their borrowed form thus we have a shared reference of them inside the lifetime of the struct object also we'll have a valid lifetime for object after calling its methods in current scope which won't be moved by first call
     [+] & is used for borrowing and taking a referencing to the location inside the memory of an unknown sized type like [u8] slices
     [+] can't return &[u8] or [u8] in function signature due to unknown size of slice and lifetime constraints we could return either Vec<u8> or Box<[u8]> since since Vec<u8> will be coerced to &'a [u8] with a valid lifetime (like 'a) at compile time

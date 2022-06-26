@@ -170,6 +170,7 @@ Sugar Rules:
     [+] in order to use the Copy trait the trait Clone must be implemented cause Clone is a supertrait of Copy
     [+] if we don't use & the value will be moved by passing into the new scope unless the Copy trait was implemented for or we can prevent it from moving using clone method if the Clone was implemented for 
 Sugar Memories:
+    [+] ownership rule says that every value has an owner which is the type itself and in order to have it inside other scopes either we have to copy (it's ok to move it into other scope if Copy trait is implemented for that), borrow it using & or clone it to prevent it from moving when we're entring into a new scope cause rust will drop the type's lifetime after entring into a new scope since it doesn't obey the garbage collection rule
     [+] define the trait and struct methods as &mut self (a shared mutable pointer or reference) if you want to mutate and update their fields otherwise &self &mut self (a shared immutable pointer or reference)
     [+] &self means all fields in struct are in their borrowed form thus we have a shared reference of them inside the lifetime of the struct object also we'll have a valid lifetime for object after calling its methods in current scope which won't be moved by first call
     [+] & is used for borrowing and taking a referencing to the location inside the memory of an unknown sized type like [u8] slices

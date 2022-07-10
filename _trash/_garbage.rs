@@ -317,6 +317,122 @@ fn trash(){
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
     generate_workout(simulated_user_specified_value, simulated_random_number);
+	
+
+    
+	pub struct Pack; //-- we've allocated some space inside the stack for this struct when defining it which has long enough lifetime to initiate an instance from it using struct declaration and return a reference to that instance inside any function 
+	trait Interface{}
+
+	impl Interface for Pack{} //-- is required for return_box_trait() function
+
+	fn return_none_trait<T>() -> () where T: Interface{ // NOTE - `T` type must be bound to Interface trait
+
+	}
+
+	fn return_impl_trait() -> impl Interface { // NOTE - returning impl Trait from function means we're implementing the trait for the object that is returning from the function regardless of its type that we're returning from the function cause compiler will detect the correct type in compile time and implement or bound the trait for that type
+	    Pack {}
+	}
+
+	fn return_box_trait() -> Box<dyn Interface> { // NOTE - returning Box<dyn Trait> from function means we're returning a struct inside the Box which the trait has implemented for
+	    Box::new(Pack {})
+	}
+
+	impl Pack{ ////// RETURN BY POINTER EXAMPLE //////
+
+
+	    fn new() -> Self{
+
+
+		let hello = "Здравствуйте";
+		let s = &hello[0..2];
+		// every index is the place of an element inside the ram which has 1 byte size which is taken by that element
+		// in our case the first element takes 2 bytes thus the index 0 won't return 3 
+		// cause place 0 and 1 inside the ram each takes 1 byte and the size of the
+		// first element is two bytes thus &hello[0..2] which is index 0 and 1 both returns 3 
+		// and we can't have string indices in rust due to this reason!
+
+
+		///////////////////////////////////////////// ENUM MATCH TEST
+		#[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
+		enum Chie{
+		    Avali(u8),
+		    Dovomi(String),
+		    Sevomi,
+		}
+
+
+		let ine = Chie::Avali(12); //-- the Dovomi variant is never constructed cause we've used the first variant  
+
+		match ine{
+		    Chie::Avali(value) if value == 23 => { //-- matching on the Avali arm if the value was only 23
+			println!("u8 eeee");
+
+		    },
+		    Chie::Dovomi(value) if value == "wildonion".to_string() => { //-- matching on the Dovomi arm if the value was only "wildonion" string
+			println!("stringeeee");
+		    },
+		    _ => {
+			println!("none of them");
+		    }
+		}
+
+		// --------------- CODEC OPS ON ENUM ---------------
+		let encoded = serde_json::to_vec(&Chie::Sevomi); ////// it'll print a vector of utf8 encoded JSON
+		let decoded = serde_json::from_slice::<Chie>(&encoded.as_ref().unwrap()); //-- as_ref() returns a reference to the original type
+
+		let encoded_borsh = Chie::Sevomi.try_to_vec().unwrap(); ////// it'll print 2 cause this the third offset in memory
+		let decoded_borsh = Chie::try_from_slice(&encoded_borsh).unwrap();
+
+		/////////////////////////////////////////////
+		Pack{}
+	    }
+
+	    fn ref_struct(num_thread: &u8) -> &Pack{ //-- returning ref from function to a pre allocated data type (not inside the function) Pack struct in our case, is ok
+		let instance = Pack::new(); //-- since new() method of the Pack struct will return a new instance of the struct which is allocated on the stack and is owned by the function thus we can't return a reference to it or as a borrowed type
+		// &t //-- it's not ok to return a reference to `instance` since `instance` is a local variable which is owned by the current function and its lifetime is valid as long as the function is inside the stack and executing which means after executing the function its lifetime will be dropped
+		let instance = &Pack{}; //-- since we're allocating nothing on the stack inside this function thus by creating the instance directly using the the Pack struct and without calling the new() method which is already lives in memory with long enough lifetime we can return a reference to the location of the instance of the pack from the function
+		instance //-- it's ok to return a reference to `instance` since the instance does not allocate anything on the stack thus taking a reference to already allocated memory with long enough lifetime is ok since the allocated memory is happened in struct definition line
+	    }
+
+	    // NOTE - argument can also be &mut u8
+	    pub fn ref_str_other_pointer_lifetime(status: &u8) -> &str{ //-- in this case we're good to return the pointer from the function or copy to the caller's space since we can use the lifetime of the passed in argument, the status in this case which has been passed in by reference from the caller and have a valid lifetime which is generated from the caller scope by the compiler to return the pointer from the function
+		let name = "wildonion";
+		name //-- name has a lifetime as valid as the passed in status argument lifetime from the caller scope 
+
+	    }
+
+	    // NOTE - first param can also be &mut self; a mutable reference to the instance and its fields
+	    pub fn ref_to_str_other_self_lifetime(&self) -> &str{ //-- in this case we're good to return the pointer from the function or copy to the caller's space since we can use the lifetime of the first param which is &self which is a borrowed type of the instance and its fields (since we don't want to lose the lifetime of the created instance from the contract struct after calling each method) and have a valid lifetime which is generated from the caller scope by the compiler to return the pointer from the function
+		let name = "wildonion";
+		name //-- name has a lifetime as valid as the first param lifetime which is a borrowed type of the instance itself and its fields and will borrow the instance when we want to call the instance methods
+	    }
+
+	    // NOTE - 'a lifetime has generated from the caller scope by the compiler
+	    pub fn ref_to_str_specific_lifetime<'a>(status: u8) -> &'a str{ //-- in this case we're good to return the pointer from the function or copy to the caller's space since we've defined a valid lifetime for the pointer of the return type to return the pointer from the function which &'a str
+		let name = "wildonion";
+		name //-- name has a lifetime as valid as the generated lifetime from the caller scope by the compiler and will be valid as long as the caller scope is valid
+	    }
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }

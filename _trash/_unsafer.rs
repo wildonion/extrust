@@ -337,6 +337,27 @@ fn unsafer(){
     println!("size name -> {:#?}", size_of_val(name));
     println!("size string name -> {:#?}", size_of_val(&string_name));
     println!("size byte name -> {:#?}", size_of_val(byte_name));
+    
+    
+    
+    
+    
+    ///// ------------------------------------------------------------------------ /////
+    // python like inline swapping
+    ///// ------------------------------------------------------------------------ /////
+    let var_a = 32;
+    let var_b = 535;
+    let mut a = &var_a; //-- a is a pointer with a valid lifetime to the location of var_a type and it contains the address and the data of that type
+    let mut b = &var_b; //-- b is a pointer with a valid lifetime to the location of var_b type and it contains the address and the data of that type
+    ///// inline swapping : a, b = b, a -> a = b; b = a and under the hood : a = &var_b, b = &var_a
+    a = &var_b; //-- pointer of var_a must points to the location of var_b and after that it can have the data inside var_b 
+    b = &var_a; //-- pointer of var_b must points to the location of var_a and after that it can have the data inside var_a
+    
+    
+    
+    
+    
+    
 
 
 

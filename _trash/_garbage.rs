@@ -320,8 +320,34 @@ fn trash(){
 	
 
     
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// =============================================================================================================================
+	// NOTE - generic types in function signature can be bounded to lifetimes and traits so we can use the lifetime to avoid having dangling pointer of the generic type in function body and traits to extend the type interface
+
+	impl<'a, Pack: Interface + 'a> Into<Vec<u8>> for Unpack<'a, Pack, SIZE>{ //-- based on orphan rule we have to import the trait inside where the struct is or bound the instance of the struct into the Into trait in function calls - we wanto to return the T inside the wrapper thus we can implement the Into trait for the wrapper struct which will return the T from the wrapper field
+	    fn into(self) -> Vec<u8> {
+		self.arr.to_vec()
+	    }
+	}
+
+
+	pub const SIZE: usize = 325;
+	pub type Context<'a, Pack> = Unpack<'a, Pack, SIZE>; //-- Pack type will be bounded to Interface trait and 'l lifetime 
+	pub struct Unpack<'l, T: Interface + 'l + Into<T>, const U: usize>{ //-- T is of type Pack struct which is bounded to 'l lifetime the Into and the Interface traits and U (constant generic) must be a constant usize type - Unpack takes a generic type of any kind which will be bounded to a trait and a lifetime but it must be referred to a field or be inside a PhantomData since T and the lifetime will be unused and reserved by no variables inside the ram
+	    pub pack: T, //-- pack is a pointer or a reference and is pointing to T which is a generic type and bounded to a trait and a valid lifetime as long as the lifetime of the struct instance
+	    pub arr: &'l [u8; U],
+	}
+
 	pub struct Pack; //-- we've allocated some space inside the stack for this struct when defining it which has long enough lifetime to initiate an instance from it using struct declaration and return a reference to that instance inside any function 
-	trait Interface{}
+	pub trait Interface{}
 
 	impl Interface for Pack{} //-- is required for return_box_trait() function
 
@@ -333,7 +359,7 @@ fn trash(){
 	    Pack {}
 	}
 
-	fn return_box_trait() -> Box<dyn Interface> { // NOTE - returning Box<dyn Trait> from function means we're returning a struct inside the Box which the trait has implemented for
+	fn return_box_trait() -> Box<dyn Interface + 'static> { // NOTE - returning Box<dyn Trait> from function means we're returning a struct inside the Box which the trait has implemented for and since traits have unknown size at compile time we must put them inside the Box with a valid lifetime like 'static
 	    Box::new(Pack {})
 	}
 
@@ -402,7 +428,7 @@ fn trash(){
 	    }
 
 	    // NOTE - first param can also be &mut self; a mutable reference to the instance and its fields
-	    pub fn ref_to_str_other_self_lifetime(&self) -> &str{ //-- in this case we're good to return the pointer from the function or copy to the caller's space since we can use the lifetime of the first param which is &self which is a borrowed type of the instance and its fields (since we don't want to lose the lifetime of the created instance from the contract struct after calling each method) and have a valid lifetime which is generated from the caller scope by the compiler to return the pointer from the function
+	    pub fn ref_to_str_other_self_lifetime(&self) -> &str{ //-- in this case we're good to return the pointer from the function or send a copy to the caller's space since we can use the lifetime of the first param which is &self which is a borrowed type of the instance and its fields (since we don't want to lose the lifetime of the created instance from the contract struct after calling each method) and have a valid lifetime (as long as the instance of the type is valid) which is generated from the caller scope by the compiler to return the pointer from the function
 		let name = "wildonion";
 		name //-- name has a lifetime as valid as the first param lifetime which is a borrowed type of the instance itself and its fields and will borrow the instance when we want to call the instance methods
 	    }
@@ -413,24 +439,42 @@ fn trash(){
 		name //-- name has a lifetime as valid as the generated lifetime from the caller scope by the compiler and will be valid as long as the caller scope is valid
 	    }
 
+	    // NOTE - 'static lifetime will be valid as long as the whole lifetime of the caller scope (it can be the main function which depends on the whole lifetime of the app)
+	    pub fn ref_to_str_static() -> &'static str{
+		let name = "wildonion";
+		name //-- name has static lifetime valid as long as the whol lifetime of the caller scope which can be the main function which will be valid as long as the main or the app is valid
+	    }
+		
+	    //// ERROR - can't return a reference to heap allocated data structure from function due to their unknown size at compile time and they are temprary value
+	    // pub fn ref_to_string<'s>() -> &'s String{
+	    //     let name = &"wildonion".to_string();
+	    //     name //-- ERROR - we can't return this or &"wildonion".to_string() since they are temporary value due to the fact that heap data structure's size are not specific at compile time and they are some kina a temporary value thus heap data structures can't be returned in their borrowed form from the function since their size are not specific at compile time therefore by taking a pointer to the location of them we might have dangling pointer later once their location gets dropped during the function lifetime body 
+	    // }
+
+	    pub fn ref_to_num<'n>() -> &'n i32{
+		let num = 23;
+		// &num //-- ERROR - we can't return this since the num is owned by the current function and returning the reference to the local variable which is owned by the function is denied
+		&23 //-- we can return &23 since we did allocate nothing on the stack inside the function (which this can be done by creating a local variable inside the function) and we're just returning a pointer to the location of a number directly   
+
+	    }
 
 	}
 	
 	
 	
+	trait Some{}
+	impl Some for Boxed{}
+
+	type Boxed = Box<dyn FnMut() + 'static>; //-- we must bound the type that wants to be a pointer or to be a referenced from a heap location like FnMut() closure to a valid lifetime like 'static
+	let var: Boxed = Box::new(||{});
+
+
+	fn call<'a>(a: &'a Boxed) -> () where Boxed: Some + 'a{ //-- in order to bind the Boxed to Some trait the Some trait must be implemented for the Boxed - can't bound a lifetime to a self-contained type means we can't have a: u32 + 'static
+	     // 'a lifetime might be shorter than static
+	     //...    
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 
